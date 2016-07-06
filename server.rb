@@ -13,4 +13,3 @@ loop do
 			puts line
 		end
 	end
-end
