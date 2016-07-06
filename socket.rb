@@ -2,8 +2,8 @@ require 'socket'
 
 #puts "Process #{Process.pid}"
 
-#system "iptables -P INPUT ACCEPT"
-#system "iptables -P OUTPUT ACCEPT"
+system "iptables -P INPUT ACCEPT"
+system "iptables -P OUTPUT ACCEPT"
 
 socket = TCPSocket.new('52.204.237.209', 2000)
 socket.puts("Hey!")
