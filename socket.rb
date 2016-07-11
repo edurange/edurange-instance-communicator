@@ -1,6 +1,13 @@
 require 'socket'
 require 'logger'
 
+def redirect_console(filename)
+  $stdout.reopen(filename,'w')
+  $stderr.reopen(filename,'w')
+end
+
+redirect_console('/root/server.log')
+
 logger = Logger.new('socket.log')
 logger.level = Logger::DEBUG
 
