@@ -9,7 +9,7 @@ logger.level = Logger::DEBUG
 #system "iptables -P INPUT ACCEPT"
 #system "iptables -P OUTPUT ACCEPT"
 logger.debug("start")
-socket = TCPSocket.new('52.9.13.127', 2000)
+socket = TCPSocket.new('52.52.25.42', 2000)
 logger.debug("socket set")
 socket.puts("Hey!")
 logger.debug("said Hey!")
