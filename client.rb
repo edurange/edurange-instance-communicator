@@ -12,7 +12,7 @@ class Client
 
   def listen
 
-    @server.puts("#{@scenarioID} #{@instanceID}")
+    @server.puts("#{@scenarioID}  #{@instanceID}")
     @directive = Thread.new do
       while line = @server.gets.split
         puts "??"
