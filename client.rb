@@ -12,7 +12,7 @@ class Client
 
   def listen
 
-    @server.puts("#{@scenarioID}  #{@instanceID}")
+    @server.puts("#{@scenarioID} #{@instanceID}")
     @directive = Thread.new do
       while line = @server.gets.split
         puts "??"
@@ -48,15 +48,5 @@ class Client
   end
 end
 
-
-#puts "Process #{Process.pid}"
-
-#system "iptables -P INPUT ACCEPT"
-#system "iptables -P OUTPUT ACCEPT"
-
-socket = TCPSocket.new('52.204.237.209', 3100)
+socket = TCPSocket.new('52.207.162.149', 3100)
 Client.new( socket, ARGV[0], ARGV[1])
-#socket.puts("Hey!")
-
-
-
