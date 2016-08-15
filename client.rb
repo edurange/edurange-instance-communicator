@@ -11,12 +11,9 @@ class Client
   end
 
   def listen
-
     @server.puts("#{@scenarioID} #{@instanceID}")
     @directive = Thread.new do
       while line = @server.gets.split
-        puts "??"
-        #puts(line)
         command(line)
       end
     end
@@ -29,6 +26,8 @@ class Client
       create_user(input[1], input[2])
     when "puts"
       puts(input[1..-1])
+    when "ping"
+      # do nothing
     else
     end
   end
