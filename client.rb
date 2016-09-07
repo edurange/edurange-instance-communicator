@@ -17,6 +17,7 @@ class Client
         command(line)
       end
     end
+    @directive.join
   end
 
   def command(input)
@@ -47,5 +48,6 @@ class Client
   end
 end
 
-socket = TCPSocket.new('52.207.162.149', 3100)
+socket = TCPSocket.new('52.3.76.163', 3100)
 Client.new( socket, ARGV[0], ARGV[1])
+# 52.3.76.163
