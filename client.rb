@@ -1,11 +1,10 @@
 #!/usr/bin/env ruby -w
 require "socket"
 class Client
-  def initialize(server, instanceID, userName, driverID, name)
+  def initialize(server, instanceID, userName, name)
     @server = server
     @instanceID = instanceID
     @userName = userName
-    @driverID = driverID
     @name = name
     @directive = nil
     listen
@@ -13,7 +12,7 @@ class Client
   end
 
   def listen
-    @server.puts("#{@instanceID} #{@userName} #{@driverID} #{@name}")
+    @server.puts("#{@instanceID} #{@userName} #{@name}")
     @directive = Thread.new do
       while line = @server.gets.split
         command(line)
@@ -51,5 +50,5 @@ class Client
 end
 
 socket = TCPSocket.new('52.3.76.163', 3100)
-Client.new(socket, ARGV[0], ARGV[1], ARGV[2], ARGV[3])
+Client.new(socket, ARGV[0], ARGV[1], ARGV[2])
 # 52.3.76.163

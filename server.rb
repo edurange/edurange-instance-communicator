@@ -9,7 +9,7 @@ require "logger"
 $logger = Logger.new('ComServer_logfile.log', 'weekly')
 $logger.level = Logger::INFO
 
-Instance = Struct.new(:client, :instanceID, :userName, :driverID, :name)
+Instance = Struct.new(:client, :instanceID, :userName, :name)
 
 class Server
   def initialize(instancePort, eduPort, controlPort)
@@ -51,7 +51,7 @@ class Server
           end
         end
 
-        @connections.push(Instance.new(client, clientData[0], clientData[1], clientData[2], clientData[3]))
+        @connections.push(Instance.new(client, clientData[0], clientData[1], clientData[2]))
         client.puts "Connection established"
       end
     }.join
@@ -86,7 +86,7 @@ class Server
           @connections.each do |client|
             inputCopy = input.clone
             inputCopy.slice!(0,2)
-            if client.instanceID == input[0] and client.driverID == input[1]
+            if client.instanceID == input[0]
               puts("Client match")
               string = inputCopy.join(" ")
               client.client.puts(string)
