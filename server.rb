@@ -41,7 +41,7 @@ class Server
       Thread.start(@server.accept) do |client|
         log("Instance ", client, " is accepted\n")
         clientData = client.gets.split
-        puts clientData + "\n"
+        puts clientData
 
         # checks if this instance is already connected
         @connections.each do |other_client|
@@ -85,7 +85,7 @@ class Server
         while input = host.gets.split
           @connections.each do |client|
             inputCopy = input.clone
-            inputCopy.slice!(0,2)
+            inputCopy.slice!(0,1)
             if client.instanceID == input[0]
               puts("Client match")
               string = inputCopy.join(" ")
