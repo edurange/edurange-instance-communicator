@@ -41,7 +41,7 @@ class Server
       Thread.start(@server.accept) do |client|
         log("Instance ", client, " is accepted\n")
         clientData = client.gets.split
-        puts clientData
+        puts clientData + "\n"
 
         # checks if this instance is already connected
         @connections.each do |other_client|

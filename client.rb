@@ -48,6 +48,6 @@ class Client
   end
 end
 
-socket = TCPSocket.new('localhost', 3100)
+socket = TCPSocket.new('52.3.76.163', 3100)
 Client.new(socket, ARGV[0], ARGV[1], ARGV[2], ARGV[3])
 # 52.3.76.163
