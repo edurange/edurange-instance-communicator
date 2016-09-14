@@ -4,8 +4,12 @@
 # 'host' refers to EDURange server connections
 # 'control' is used for debugging
 require "socket"
+require "logger"
 
-Instance = Struct.new(:scenarioID, :instanceID, :client)
+$logger = Logger.new('ComServer_logfile.log', 'weekly')
+$logger.level = Logger::INFO
+
+Instance = Struct.new(:client, :instanceID, :userName, :driverID, :name)
 
 class Server
   def initialize(instancePort, eduPort, controlPort)
@@ -16,32 +20,38 @@ class Server
     @connections = Array.new
     clientThread = Thread.new{run_client}    
     hostThread = Thread.new{run_host}
-#    controlThread = Thread.new{run_control}
+    controlThread = Thread.new{run_control}
     rmClientThread = Thread.new{remove_client}
     clientThread.join
     hostThread.join
-#    controlThread.join
+    controlThread.join
     rmClientThread.join
+  end
+
+  def log(*args)
+    msg = "#{args.join('')}"
+    print(msg)
+    $logger.info(msg)
   end
 
   # Accepts instance connections
   def run_client
+    log("Communication server booted.\n")
     loop {
       Thread.start(@server.accept) do |client|
-        print("Instance ", client, " is accepted\n")
+        log("Instance ", client, " is accepted\n")
         clientData = client.gets.split
         puts clientData
 
         # checks if this instance is already connected
         @connections.each do |other_client|
           if client == other_client
-          # CHANGE THIS TO RUN REMOVE CLIENT AND THEN CHECK THIS AGAIN
             client.puts "You're already connected!"
             Thread.kill self
           end
         end
 
-        @connections.push(Instance.new(clientData[0], clientData[1], client))
+        @connections.push(Instance.new(client, clientData[0], clientData[1], clientData[2], clientData[3]))
         client.puts "Connection established"
       end
     }.join
@@ -49,21 +59,18 @@ class Server
 
   # Checks if each instance is still connected. Closes socket and removes from @connections if so
   def remove_client
-    puts "Start"
     loop {
-      sleep 10
+      sleep 60
       @connections.each do |socket|
         begin
-          socket.client.puts "ping"
+          socket.client.puts("ping")
         rescue Exception => exception
           case exception
-          when Errno::EPIPE
-            socket.client.close
-            # does this next line work?
-            @connections.delete(socket)
-            puts(socket.client, " disconnected.")
-          else
-            raise exception
+            when Errno::EPIPE
+              socket.client.close
+              @connections.delete(socket)
+              puts(socket.client, " disconnected.")
+            else puts(exception)
           end
         end
       end
@@ -74,12 +81,12 @@ class Server
   def run_host
     loop {
       Thread.start(@host.accept) do |host|
-        print("EDURange ", host, " is accepted\n")
+        log("EDURange ", host, " is accepted\n")
         while input = host.gets.split
           @connections.each do |client|
             inputCopy = input.clone
             inputCopy.slice!(0,2)
-            if client.scenarioID == input[0] and client.instanceID == input[1]
+            if client.instanceID == input[0] and client.driverID == input[1]
               puts("Client match")
               string = inputCopy.join(" ")
               client.client.puts(string)
@@ -94,7 +101,7 @@ class Server
   def run_control
     loop {
       Thread.start(@control.accept) do |control|
-        print("Control ", control, " is accepted\n")
+        log("Control ", control, " is accepted\n")
         control.puts("Controller connected. Enter 'help' for command list.")
         ctrl_commands(control)
       end
@@ -106,11 +113,11 @@ class Server
       input = control.gets.downcase.chomp
       case input
       when "help", "h", "-h"
-        puts("hi")
+        control.puts("hi")
       when "instances"
         @connections.each do |socket|
-          prints("index ", @connections.index(socket), ": ")
-          puts.socket
+          control.print("index ", @connections.index(socket), ": ")
+          control.puts(socket)
         end
       when "exit"
         break
