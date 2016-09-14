@@ -52,6 +52,7 @@ class Client
   def create_user(us,pw)
     pwd = pw.crypt("$5$a1")
     result = system("sudo useradd -m -p '#{ pwd }' #{ us } -s /bin/bash")
+    log($stdin.read)
     if result
             log "#{ us } created!\n"
         else
