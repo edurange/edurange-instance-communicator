@@ -3,15 +3,17 @@ require "socket"
 class Client
   def initialize(server, instanceID, userName, driverID, name)
     @server = server
-    @scenarioID = scenarioID
     @instanceID = instanceID
+    @userName = userName
+    @driverID = driverID
+    @name = name
     @directive = nil
     listen
     @directive.join
   end
 
   def listen
-    @server.puts("#{@scenarioID} #{@instanceID} #{driverID} #{name}")
+    @server.puts("#{@instanceID} #{@userName} #{@driverID} #{@name}")
     @directive = Thread.new do
       while line = @server.gets.split
         command(line)
