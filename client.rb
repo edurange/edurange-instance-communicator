@@ -17,13 +17,14 @@ class Client
   end
 
   def log(*args)
-    msg = "#{args.join('')}"
+    msg = "#{args.join(' ')}"
     print(msg)
     $logger.info(msg)
   end
 
   def listen
     @server.puts("#{@instanceID} #{@userName} #{@name}")
+    log(@server.gets)
     @directive = Thread.new do
       while line = @server.gets.split
         command(line)

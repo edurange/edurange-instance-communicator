@@ -29,7 +29,7 @@ class Server
   end
 
   def log(*args)
-    msg = "#{args.join('')}"
+    msg = "#{args.join(' ')}"
     print(msg)
     $logger.info(msg)
   end
@@ -41,7 +41,7 @@ class Server
       Thread.start(@server.accept) do |client|
         log("Instance ", client, " is accepted\n")
         clientData = client.gets.split
-        puts clientData
+        log clientData
 
         # checks if this instance is already connected
         @connections.each do |other_client|
